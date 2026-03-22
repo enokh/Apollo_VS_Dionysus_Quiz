@@ -1,0 +1,144 @@
+1. Overview
+
+This application is a web-based personality assessment tool where users respond to a series of
+subjective statements (e.g., "I believe dance is an important part of my personal expression")
+using a rating scale. User responses are collected during a session and sent to the backend,
+where a personality profile is computed and returned.
+
+
+2. Goals
+
+Primary Goals:
+- Provide a smooth, engaging quiz experience
+- Collect structured response data from users
+- Compute personality traits on the server
+- Present results in a clear and interpretable format
+
+Secondary Goals:
+- Allow extensibility for new questions/scales
+- Support anonymous and logged-in users
+- Enable experimentation (A/B testing, different scoring models)
+
+
+3. User Flow
+
+1. User lands on homepage
+2. Clicks "Start Quiz"
+3. A session is created (anonymous or logged-in)
+4. User answers a sequence of questions one at a time (Likert scale)
+5. User submits responses
+6. Server computes personality profile
+7. User is shown results (dominant trait, score breakdown, summary)
+   - Option to share results (via shareable link)
+   - Option to retake quiz
+
+
+4. Tech Stack
+
+Frontend:
+- Framework: React
+- State management: React context or lightweight store (e.g., Zustand)
+- Styling: CSS Modules or Tailwind CSS
+
+Backend:
+- Language/Framework: (to be decided)
+- Session storage: server-side sessions or JWT tokens
+- Database: (to be decided)
+
+Asset Hosting:
+- Question images served as static assets or via a CDN
+
+
+5. Components
+
+Frontend:
+- Quiz UI (one question at a time with associated image)
+- State management (tracks responses across questions)
+- API client (handles requests to backend)
+
+Backend:
+- API endpoints
+- Scoring engine
+- Validation layer
+- Session manager
+
+
+6. Data Model
+
+Question (served to the frontend):
+{
+    "id": "q1",
+    "text": "I believe dance is an important part of my personal expression",
+    "personality": "Apollonian" | "Dionysian",
+    "significance": 1 | 2,
+    "image_url": "/assets/images/q1.jpg"
+}
+
+Session:
+{
+    "session_id": "abc123",
+    "created_at": "2026-03-19T10:00:00Z",
+    "user_id": null
+}
+
+Response Payload (sent on submission):
+{
+    "session_id": "abc123",
+    "responses": [
+        { "question_id": "q1", "value": 5 },
+        { "question_id": "q2", "value": 2 }
+    ]
+}
+
+Result Object (returned by server):
+{
+    "personality": "Apollonian" | "Dionysian",
+    "scores": {
+        "apollonian": 74,
+        "dionysian": 26
+    },
+    "summary": "You are highly creative and moderately social.",
+    "share_url": "/results/abc123"
+}
+
+
+7. API Endpoints
+
+GET    /api/questions           — Fetch all quiz questions (with image URLs)
+POST   /api/session             — Create a new session; returns session_id
+POST   /api/submit              — Submit responses; returns result object
+GET    /api/results/:session_id — Retrieve a previously computed result (for share links)
+
+
+8. Auth / Session Management
+
+- Anonymous users receive a session_id on quiz start (via POST /api/session)
+- Logged-in users (future) will have their session_id linked to a user_id
+- Sessions expire after a configurable TTL
+- Share links (/results/:session_id) are publicly accessible without authentication
+
+
+9. Scoring Logic
+
+- TO BE IMPLEMENTED
+
+
+10. Frontend Design
+
+- Main Page: brief introduction paragraph and a "Start Quiz" button
+- Quiz Page: one question shown at a time with an associated image; progress indicator optional
+- Results Page: displays dominant personality type, score breakdown, and summary;
+  includes a shareable link and a "Retake Quiz" button
+
+
+11. Image Storage
+
+- Question images are stored as static assets (e.g., /assets/images/)
+- Each question references its image via an image_url field
+- If a CDN is adopted later, only the base URL needs to change
+
+
+12. Style
+
+Minimalist black and white, with text styling similar to traditional ancient Roman letters
+and symbols for the buttons.

@@ -13,8 +13,8 @@ export function validateSubmission(req, res, next) {
     if (!r.question_id || typeof r.question_id !== 'string') {
       return res.status(400).json({ error: 'Each response must have a question_id' });
     }
-    if (typeof r.value !== 'number' || r.value < 1 || r.value > 5) {
-      return res.status(400).json({ error: 'Each response value must be an integer between 1 and 5' });
+    if (typeof r.value !== 'number' || r.value < 0 || r.value > 4) {
+      return res.status(400).json({ error: 'Each response value must be an integer between 0 and 4' });
     }
   }
 

@@ -5,7 +5,7 @@ const router = Router();
 
 // GET /api/questions
 router.get('/', (req, res) => {
-  const questions = db.prepare('SELECT * FROM questions').all();
+  const questions = db.prepare('SELECT * FROM questions LIMIT 5').all();
   res.json(questions);
 });
 

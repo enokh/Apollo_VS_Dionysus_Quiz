@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS responses (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   session_id TEXT NOT NULL,
   question_id TEXT NOT NULL,
-  value INTEGER NOT NULL CHECK(value BETWEEN 1 AND 5),
+  value INTEGER NOT NULL CHECK(value BETWEEN 0 AND 4),
   FOREIGN KEY (session_id) REFERENCES sessions(session_id),
   FOREIGN KEY (question_id) REFERENCES questions(id)
 );
